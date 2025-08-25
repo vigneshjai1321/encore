@@ -1,27 +1,36 @@
-import React, { useState } from "react";
-import Sidebar from "./Sidebar";
-import Header from "./Header";
-import Home from "../../pages/Home/Home";   // import Home here
-import "./Layout.css";
+import React, { useState } from 'react';
+import { Layout } from 'antd';
+import Header from './Header';
+import Sider from './Sidebar';
 
-const Layout = ({ children }) => {
-  const [isSidebarCollapsed, setSidebarCollapsed] = useState(false);
+const { Content } = Layout;
 
-  const toggleSidebar = () => {
-    setSidebarCollapsed(!isSidebarCollapsed);
+const AppLayout = ({ children }) => {
+  const [collapsed, setCollapsed] = useState(false);
+
+  const toggleCollapsed = () => {
+    setCollapsed(!collapsed);
   };
 
   return (
-    <div className="main-layout">
-      <Sidebar isSidebarCollapsed={isSidebarCollapsed} toggleSidebar={toggleSidebar} />
-      <div className={`content-wrapper ${isSidebarCollapsed ? "collapsed" : ""}`}>
-        <Header />
-        <main className="page-content">
-          {children || <Home />}   {/* Show Home if no child route */}
-        </main>
-      </div>
-    </div>
+    <Layout style={{ minHeight: '100vh' }}>
+      <Sider collapsed={collapsed} />
+      <Layout style={{ marginLeft: collapsed ? 80 : 280 }}>
+        <Header collapsed={collapsed} onToggle={toggleCollapsed} />
+        <Content
+          style={{
+            margin: '24px 16px',
+            padding: 24,
+            minHeight: 280,
+            background: '#fff',
+            borderRadius: 6,
+          }}
+        >
+          {children || 'Content goes here'}
+        </Content>
+      </Layout>
+    </Layout>
   );
 };
 
-export default Layout;
+export default AppLayout;

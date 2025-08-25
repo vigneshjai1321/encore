@@ -1,62 +1,372 @@
-import React from "react";
-import { Navbar, Nav, Dropdown } from "react-bootstrap";
-import "bootstrap-icons/font/bootstrap-icons.css";
-import "./Header.css";
-import Logo from "../../assets/images/logowithicon_ewc.png";
+import React, { useState, useEffect } from 'react';
+import { Layout, Button, Space, Dropdown, Avatar, Alert, Drawer } from 'antd';
+import {
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+  AppstoreOutlined,
+  SearchOutlined,
+  BellOutlined,
+  QuestionCircleOutlined,
+  UserOutlined,
+  MoreOutlined,
+  EllipsisOutlined,
+} from '@ant-design/icons';
+import { ENCORE_LOGO_DARK } from '../../Constants/constants';
 
-const Header = () => {
+const { Header: AntHeader } = Layout;
+
+const Header = ({ collapsed, onToggle }) => {
+  const [screenSize, setScreenSize] = useState('desktop');
+  const [mobileMenuVisible, setMobileMenuVisible] = useState(false);
+
+  // Track screen size
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      if (width < 576) {
+        setScreenSize('mobile');
+      } else if (width < 992) {
+        setScreenSize('tablet');
+      } else {
+        setScreenSize('desktop');
+      }
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const userMenuItems = [
+    {
+      key: 'profile',
+      label: 'Profile',
+      icon: <UserOutlined />,
+    },
+    {
+      key: 'settings',
+      label: 'Settings',
+    },
+    {
+      type: 'divider',
+    },
+    {
+      key: 'logout',
+      label: 'Logout',
+    },
+  ];
+
+  // Mobile action menu items
+  const mobileActionItems = [
+    {
+      key: 'apps',
+      label: 'Apps',
+      icon: <AppstoreOutlined />,
+    },
+    {
+      key: 'search',
+      label: 'Search',
+      icon: <SearchOutlined />,
+    },
+    {
+      key: 'notifications',
+      label: 'Notifications',
+      icon: <BellOutlined />,
+    },
+    {
+      key: 'help',
+      label: 'Help',
+      icon: <QuestionCircleOutlined />,
+    },
+  ];
+
+  const showMobileMenu = () => setMobileMenuVisible(true);
+  const hideMobileMenu = () => setMobileMenuVisible(false);
+
+  // Render action buttons based on screen size
+  const renderActionButtons = () => {
+    if (screenSize === 'mobile') {
+      // Mobile: Show only essential buttons + overflow menu
+      return (
+        <Space size="small">
+          <Button
+            type="text"
+            icon={<BellOutlined />}
+            size="large"
+            style={{ padding: '8px' }}
+          />
+          <Dropdown
+            menu={{ items: mobileActionItems }}
+            placement="bottomRight"
+            trigger={['click']}
+          >
+            <Button
+              type="text"
+              icon={<EllipsisOutlined />}
+              size="large"
+              style={{ padding: '8px' }}
+            />
+          </Dropdown>
+        </Space>
+      );
+    } else if (screenSize === 'tablet') {
+      // Tablet: Show some buttons + overflow menu
+      return (
+        <Space size="medium">
+          <Button
+            type="text"
+            icon={<SearchOutlined />}
+            size="large"
+          />
+          <Button
+            type="text"
+            icon={<BellOutlined />}
+            size="large"
+          />
+          <Dropdown
+            menu={{ items: [mobileActionItems[0], mobileActionItems[3]] }}
+            placement="bottomRight"
+            trigger={['click']}
+          >
+            <Button
+              type="text"
+              icon={<MoreOutlined />}
+              size="large"
+            />
+          </Dropdown>
+        </Space>
+      );
+    } else {
+      // Desktop: Show all buttons
+      return (
+        <Space size="large">
+          <Button
+            type="text"
+            icon={<AppstoreOutlined />}
+            size="large"
+          />
+          <Button
+            type="text"
+            icon={<SearchOutlined />}
+            size="large"
+          />
+          <Button
+            type="text"
+            icon={<BellOutlined />}
+            size="large"
+          />
+          <Button
+            type="text"
+            icon={<QuestionCircleOutlined />}
+            size="large"
+          />
+        </Space>
+      );
+    }
+  };
+
+  // Render user section based on screen size
+  const renderUserSection = () => {
+    if (screenSize === 'mobile') {
+      return (
+        <Dropdown
+          menu={{ items: userMenuItems }}
+          placement="bottomRight"
+          arrow
+        >
+          <Avatar 
+            icon={<UserOutlined />} 
+            size="small" 
+            style={{ cursor: 'pointer' }}
+          />
+        </Dropdown>
+      );
+    } else {
+      return (
+        <Dropdown
+          menu={{ items: userMenuItems }}
+          placement="bottomRight"
+          arrow
+        >
+          <Button
+            type="text"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: screenSize === 'tablet' ? 4 : 8,
+              height: 'auto',
+              padding: screenSize === 'tablet' ? '4px 6px' : '4px 8px',
+              maxWidth: screenSize === 'tablet' ? '140px' : 'none',
+            }}
+          >
+            {screenSize === 'tablet' ? (
+              <>
+                <span style={{ 
+                  overflow: 'hidden', 
+                  textOverflow: 'ellipsis', 
+                  whiteSpace: 'nowrap',
+                  fontSize: '14px'
+                }}>
+                  Emma M.
+                </span>
+                <Avatar icon={<UserOutlined />} size="small" />
+              </>
+            ) : (
+              <>
+                <span>Emma Mackey</span>
+                <Avatar icon={<UserOutlined />} size="small" />
+              </>
+            )}
+          </Button>
+        </Dropdown>
+      );
+    }
+  };
+
   return (
     <>
-      <Navbar bg="white" expand="lg" className="header shadow-sm sticky-top">
-        <Navbar.Brand href="#home" className="d-flex align-items-center ms-3">
-          <img
-            src={Logo}
-            alt="Logo"
-            width="200"
-            height="50"
-            className="me-2"
+      <AntHeader
+        style={{
+          padding: screenSize === 'mobile' ? '0 12px' : '0 16px',
+          background: '#fff',
+          borderBottom: '1px solid #f0f0f0',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          height: screenSize === 'mobile' ? '56px' : '78px',
+        }}
+      >
+        {/* Left Section */}
+        <div style={{ 
+          display: 'flex', 
+          alignItems: 'center',
+          flex: screenSize === 'mobile' ? '1' : 'none',
+          minWidth: 0, // Allow shrinking
+        }}>
+          <Button
+            type="text"
+            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+            onClick={onToggle}
+            style={{
+              fontSize: '16px',
+              width: screenSize === 'mobile' ? 48 : 64,
+              height: screenSize === 'mobile' ? 48 : 64,
+            }}
           />
-        </Navbar.Brand>
+          {screenSize !== 'mobile' && (
+            <img
+              src={ENCORE_LOGO_DARK}
+              alt="Logo"
+              style={{
+                height: screenSize === 'tablet' ? 32 : 40,
+                marginLeft: screenSize === 'tablet' ? 12 : 16,
+              }}
+            />
+          )}
+        </div>
 
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="ms-auto align-items-center gap-3">
-            <Nav.Link href="#home">
-              <i className="bi bi-grid-3x3-gap-fill fs-5"></i>
-            </Nav.Link>
-            <Nav.Link href="#link">
-              <i className="bi bi-search fs-5"></i>
-            </Nav.Link>
-            <Nav.Link href="#link">
-              <i className="bi bi-bell-fill fs-5"></i>
-            </Nav.Link>
-            <Nav.Link href="#link">
-              <i className="bi bi-question-circle-fill fs-5"></i>
-            </Nav.Link>
+        {/* Right Section */}
+        <div style={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          gap: screenSize === 'mobile' ? 8 : 16,
+        }}>
+          {renderActionButtons()}
+          {renderUserSection()}
+        </div>
+      </AntHeader>
 
-            {/* User Dropdown */}
-            <Dropdown align="end">
-              <Dropdown.Toggle id="dropdown-basic" className="user-dropdown">
-                <span className="me-2">Emma Mackey</span>
-                <i className="bi bi-person-circle fs-5"></i>
-              </Dropdown.Toggle>
+      {/* Banner */}
+      <Alert
+        message="Provider Appointment"
+        type="info"
+        showIcon={false}
+        style={{
+          margin: screenSize === 'mobile' 
+            ? '12px 12px 0 12px' 
+            : screenSize === 'tablet'
+            ? '14px 16px 0 16px'
+            : '16px 24px 0 24px',
+          fontWeight: 'bold',
+          fontSize: screenSize === 'mobile' ? '14px' : '15px',
+        }}
+      />
 
-              {/* FIX: floating menu */}
-              <Dropdown.Menu popperConfig={{ strategy: "fixed" }}>
-                <Dropdown.Item href="#/profile">Profile</Dropdown.Item>
-                <Dropdown.Item href="#/settings">Settings</Dropdown.Item>
-                <Dropdown.Divider />
-                <Dropdown.Item href="#/logout">Logout</Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-          </Nav>
-        </Navbar.Collapse>
-      </Navbar>
+      {/* Mobile Actions Drawer (optional enhancement) */}
+      <Drawer
+        title="Actions"
+        placement="right"
+        onClose={hideMobileMenu}
+        open={mobileMenuVisible}
+        width={280}
+        bodyStyle={{ padding: 0 }}
+      >
+        <div style={{ padding: '16px' }}>
+          <Space direction="vertical" size="large" style={{ width: '100%' }}>
+            {mobileActionItems.map(item => (
+              <Button
+                key={item.key}
+                type="text"
+                icon={item.icon}
+                size="large"
+                block
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'flex-start',
+                  gap: 12,
+                  padding: '12px 16px',
+                  height: 'auto',
+                }}
+              >
+                {item.label}
+              </Button>
+            ))}
+          </Space>
+        </div>
+      </Drawer>
 
-      {/* Example Banner */}
-      <div className="p-3 bg-info text-white fw-bold rounded my-3 ms-3 me-3">
-        Provider Appointment
-      </div>
+      {/* Responsive styles */}
+      <style jsx>{`
+        @media (max-width: 575px) {
+          .ant-layout-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+          }
+          
+          .ant-alert {
+            border-radius: 4px !important;
+          }
+        }
+
+        @media (max-width: 991px) {
+          .ant-space-item {
+            margin-right: 8px !important;
+          }
+        }
+
+        /* Ensure proper touch targets on mobile */
+        @media (max-width: 575px) {
+          .ant-btn {
+            min-width: 44px;
+            min-height: 44px;
+          }
+          
+          .ant-avatar {
+            min-width: 32px;
+            min-height: 32px;
+          }
+        }
+
+        /* Tablet optimizations */
+        @media (min-width: 576px) and (max-width: 991px) {
+          .ant-btn {
+            min-width: 40px;
+            min-height: 40px;
+          }
+        }
+      `}</style>
     </>
   );
 };
