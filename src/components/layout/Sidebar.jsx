@@ -1,5 +1,5 @@
-import React from "react";
-import { Layout, Menu, Button } from "antd";
+import React from 'react';
+import { Layout, Menu, Button } from 'antd';
 import {
   PlusOutlined,
   BookOutlined,
@@ -11,133 +11,157 @@ import {
   SettingOutlined,
   BarChartOutlined,
   EditOutlined,
-} from "@ant-design/icons";
-import { ENCORE_LOGO } from "../../Constants/constants";
+} from '@ant-design/icons';
+import { ENCORE_LOGO } from '../../Constants/constants';
+
 
 const { Sider: AntSider } = Layout;
 
 const Sider = ({ collapsed }) => {
   const menuItems = [
     {
-      key: "bookmarks",
-      icon: <BookOutlined />, // left icon
-      label: (
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <span>BOOKMARKS</span>
-          <EditOutlined style={{ marginLeft: 8 }} />
-        </div>
-      ),
+      key: 'bookmarks',
+      icon: <BookOutlined />,
+      label: 'BOOKMARKS',
       children: [
         {
-          key: "home",
-          label: "Home 🏠",
+          key: 'home',
+          label: 'Home 🏠',
         },
         {
-          key: "sub1",
-          label: "Sub Item 1 🔹",
+          key: 'sub1',
+          label: 'Sub Item 1 🔹',
         },
         {
-          key: "sub2",
-          label: "Sub Item 2 🔹",
+          key: 'sub2',
+          label: 'Sub Item 2 🔹',
         },
         {
-          key: "sub3",
-          label: "Sub Item 3 🔹",
+          key: 'sub3',
+          label: 'Sub Item 3 🔹',
         },
       ],
     },
     {
-      key: "menu",
+      key: 'menu',
       icon: <HomeOutlined />,
-      label: "MENU",
+      label: 'MENU',
       children: [
         {
-          key: "home",
-          label: "Home 🏠",
+          key: 'appointment',
+          icon: <CalendarOutlined />,
+          label: 'APPOINTMENT',
+          children: [
+            {
+              key: 'appointment-sub1',
+              label: 'Sub Item 1',
+            },
+            {
+              key: 'appointment-sub2',
+              label: 'Sub Item 2',
+            },
+            {
+              key: 'appointment-sub3',
+              label: 'Sub Item 3',
+            },
+          ],
         },
         {
-          key: "sub1",
-          label: "Sub Item 1 🔹",
+          key: 'clinical-notes',
+          icon: <FileTextOutlined />,
+          label: 'CLINICAL NOTES',
+          children: [
+            {
+              key: 'notes-sub1',
+              label: 'Sub Item 1',
+            },
+            {
+              key: 'notes-sub2',
+              label: 'Sub Item 2',
+            },
+            {
+              key: 'notes-sub3',
+              label: 'Sub Item 3',
+            },
+          ],
         },
         {
-          key: "sub2",
-          label: "Sub Item 2 🔹",
+          key: 'form-tools',
+          icon: <FormOutlined />,
+          label: 'FORM TOOLS',
+          children: [
+            {
+              key: 'form-sub1',
+              label: 'Sub Item 1',
+            },
+            {
+              key: 'form-sub2',
+              label: 'Sub Item 2',
+            },
+            {
+              key: 'form-sub3',
+              label: 'Sub Item 3',
+            },
+          ],
         },
         {
-          key: "sub3",
-          label: "Sub Item 3 🔹",
+          key: 'residents',
+          icon: <TeamOutlined />,
+          label: 'RESIDENTS',
+        },
+        {
+          key: 'setup',
+          icon: <SettingOutlined />,
+          label: 'SETUP',
+          children: [
+            {
+              key: 'setup-sub1',
+              label: 'Sub Item 1',
+            },
+            {
+              key: 'setup-sub2',
+              label: 'Sub Item 2',
+            },
+            {
+              key: 'setup-sub3',
+              label: 'Sub Item 3',
+            },
+          ],
+        },
+        {
+          key: 'report',
+          icon: <BarChartOutlined />,
+          label: 'REPORT',
+          children: [
+            {
+              key: 'report-sub1',
+              label: 'Sub Item 1',
+            },
+            {
+              key: 'report-sub2',
+              label: 'Sub Item 2',
+            },
+            {
+              key: 'report-sub3',
+              label: 'Sub Item 3',
+            },
+          ],
         },
       ],
     },
-    {
-    key: "appointment",
-    icon: <CalendarOutlined />,
-    label: "Appointment",
-    children: [
-      { key: "a1", label: "Today" },
-      { key: "a2", label: "Upcoming" },
-    ],
-  },
-  {
-    key: "clinical",
-    icon: <FileTextOutlined />,
-    label: "Clinical Notes",
-    children: [
-      { key: "c1", label: "Notes 1" },
-      { key: "c2", label: "Notes 2" },
-    ],
-  },
-  {
-    key: "formtools",
-    icon: <FormOutlined />,
-    label: "Form Tools",
-    children: [
-      { key: "f1", label: "Tool 1" },
-      { key: "f2", label: "Tool 2" },
-    ],
-  },
-  {
-    key: "residents",
-    icon: <TeamOutlined />,
-    label: "Residents", // No dropdown
-  },
-  {
-    key: "setup",
-    icon: <SettingOutlined />,
-    label: "Setup",
-    children: [
-      { key: "s1", label: "General" },
-      { key: "s2", label: "Advanced" },
-    ],
-  },
-  {
-    key: "report",
-    icon: <BarChartOutlined />,
-    label: "Report",
-    children: [
-      { key: "r1", label: "Daily" },
-      { key: "r2", label: "Monthly" },
-    ],
-  },
   ];
 
   return (
-    <AntSider
-      trigger={null}
-      collapsible
+    <AntSider 
+      trigger={null} 
+      collapsible 
       collapsed={collapsed}
       theme="dark"
       width={280}
       style={{
-        overflow: "scroll",
-        height: "100vh",
-        position: "fixed",
+        overflow: 'scroll',
+        height: '100vh',
+        position: 'fixed',
         left: 0,
         top: 0,
         bottom: 0,
@@ -145,36 +169,33 @@ const Sider = ({ collapsed }) => {
     >
       {/* Logo */}
       {!collapsed && (
-        <div
-          style={{
-            padding: "16px",
-            textAlign: "center",
-            borderBottom: "1px solid #f0f0f0",
-          }}
-        >
+        <div style={{ 
+          padding: '16px', 
+          textAlign: 'center',
+        }}>
           <img
-            src={ENCORE_LOGO}
+            src={ENCORE_LOGO} 
             alt="Encore Logo"
-            style={{ height: 40, maxWidth: "100%" }}
+            style={{ height: 40, maxWidth: '100%' }}
           />
         </div>
       )}
 
       {/* New Order Button */}
-      <div style={{ padding: "16px" }}>
+      <div style={{ padding: '16px' }}>
         <Button
           type="primary"
           icon={<PlusOutlined />}
           size="large"
           block
           style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: collapsed ? "center" : "flex-start",
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: collapsed ? 'center' : 'flex-start',
             gap: collapsed ? 0 : 8,
           }}
         >
-          {!collapsed && "NEW ORDER"}
+          {!collapsed && 'NEW ORDER'}
         </Button>
       </div>
 
@@ -182,7 +203,7 @@ const Sider = ({ collapsed }) => {
       <Menu
         theme="dark"
         mode="inline"
-        defaultSelectedKeys={["home"]}
+        defaultSelectedKeys={['home']}
         items={menuItems}
         triggerSubMenuAction="hover"
         style={{
