@@ -1,0 +1,57 @@
+/* Header base */
+.header {
+  width: 100%;
+  transition: all 0.3s ease;
+  z-index: 100;
+  margin-left: 0;
+  overflow: visible !important; /* allow dropdowns to escape */
+}
+
+/* User dropdown button */
+.user-dropdown {
+  background-color: #3eb2ff !important;
+  border: none !important;
+  color: #0a192f !important;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+}
+
+.user-dropdown:hover {
+  background-color: #b3e0ff !important;
+}
+
+/* Dropdown menu floating style */
+.dropdown-menu {
+  min-width: 180px;
+  margin-top: 8px;
+  padding: 8px 0;
+  border-radius: 10px;
+  border: 1px solid #e5e5e5;
+  background-color: #ffffff;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  position: absolute !important;
+  z-index: 9999 !important; /* ensures it's always on top */
+}
+
+/* Dropdown items */
+.dropdown-menu .dropdown-item {
+  font-size: 14px;
+  padding: 10px 16px;
+  color: #0a192f;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.dropdown-menu .dropdown-item:hover {
+  background-color: #f0f9ff;
+  color: #0077cc;
+  border-radius: 6px;
+}
+
+/* Divider */
+.dropdown-divider {
+  margin: 6px 0;
+  border-color: #eaeaea;
+}
