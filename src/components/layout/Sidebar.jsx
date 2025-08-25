@@ -1,167 +1,218 @@
-import React, { useState } from "react";
-import { Nav } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import "bootstrap-icons/font/bootstrap-icons.css";
-import "./Sidebar.css";
-import encoreLogo from "../../assets/images/Encore-Logo-Horizontal.svg"; 
+import React from 'react';
+import { Layout, Menu, Button } from 'antd';
+import {
+  PlusOutlined,
+  BookOutlined,
+  HomeOutlined,
+  CalendarOutlined,
+  FileTextOutlined,
+  FormOutlined,
+  TeamOutlined,
+  SettingOutlined,
+  BarChartOutlined,
+  EditOutlined,
+} from '@ant-design/icons';
+import { ENCORE_LOGO } from '../../Constants/constants';
 
-const Sidebar = ({ isSidebarCollapsed }) => {
-  const [openDropdown, setOpenDropdown] = useState("");
 
-  const handleDropdownToggle = (dropdownName) => {
-    setOpenDropdown(openDropdown === dropdownName ? "" : dropdownName);
-  };
+const { Sider: AntSider } = Layout;
 
- 
-  const fakeDropdownContent = ["Sub Item 1", "Sub Item 2", "Sub Item 3"];
+const Sider = ({ collapsed }) => {
+  const menuItems = [
+    {
+      key: 'bookmarks',
+      icon: <BookOutlined />,
+      label: 'BOOKMARKS',
+      children: [
+        {
+          key: 'home',
+          label: 'Home 🏠',
+        },
+        {
+          key: 'sub1',
+          label: 'Sub Item 1 🔹',
+        },
+        {
+          key: 'sub2',
+          label: 'Sub Item 2 🔹',
+        },
+        {
+          key: 'sub3',
+          label: 'Sub Item 3 🔹',
+        },
+      ],
+    },
+    {
+      key: 'menu',
+      icon: <HomeOutlined />,
+      label: 'MENU',
+      children: [
+        {
+          key: 'appointment',
+          icon: <CalendarOutlined />,
+          label: 'APPOINTMENT',
+          children: [
+            {
+              key: 'appointment-sub1',
+              label: 'Sub Item 1',
+            },
+            {
+              key: 'appointment-sub2',
+              label: 'Sub Item 2',
+            },
+            {
+              key: 'appointment-sub3',
+              label: 'Sub Item 3',
+            },
+          ],
+        },
+        {
+          key: 'clinical-notes',
+          icon: <FileTextOutlined />,
+          label: 'CLINICAL NOTES',
+          children: [
+            {
+              key: 'notes-sub1',
+              label: 'Sub Item 1',
+            },
+            {
+              key: 'notes-sub2',
+              label: 'Sub Item 2',
+            },
+            {
+              key: 'notes-sub3',
+              label: 'Sub Item 3',
+            },
+          ],
+        },
+        {
+          key: 'form-tools',
+          icon: <FormOutlined />,
+          label: 'FORM TOOLS',
+          children: [
+            {
+              key: 'form-sub1',
+              label: 'Sub Item 1',
+            },
+            {
+              key: 'form-sub2',
+              label: 'Sub Item 2',
+            },
+            {
+              key: 'form-sub3',
+              label: 'Sub Item 3',
+            },
+          ],
+        },
+        {
+          key: 'residents',
+          icon: <TeamOutlined />,
+          label: 'RESIDENTS',
+        },
+        {
+          key: 'setup',
+          icon: <SettingOutlined />,
+          label: 'SETUP',
+          children: [
+            {
+              key: 'setup-sub1',
+              label: 'Sub Item 1',
+            },
+            {
+              key: 'setup-sub2',
+              label: 'Sub Item 2',
+            },
+            {
+              key: 'setup-sub3',
+              label: 'Sub Item 3',
+            },
+          ],
+        },
+        {
+          key: 'report',
+          icon: <BarChartOutlined />,
+          label: 'REPORT',
+          children: [
+            {
+              key: 'report-sub1',
+              label: 'Sub Item 1',
+            },
+            {
+              key: 'report-sub2',
+              label: 'Sub Item 2',
+            },
+            {
+              key: 'report-sub3',
+              label: 'Sub Item 3',
+            },
+          ],
+        },
+      ],
+    },
+  ];
 
   return (
-    <div className={`sidebar-wrapper ${isSidebarCollapsed ? "collapsed" : ""}`}>
-     
-      {!isSidebarCollapsed && <img src={encoreLogo} alt="Encore Logo" className="sidebar-logo" />}
-
-      <Nav className="flex-column sidebar">
-       
-        <div className="new-order-btn-container">
-          <Link to="" className="new-order-btn">
-            <i className="bi bi-plus-lg"></i>
-            <span>NEW ORDER</span>
-          </Link>
+    <AntSider 
+      trigger={null} 
+      collapsible 
+      collapsed={collapsed}
+      theme="dark"
+      width={280}
+      style={{
+        overflow: 'scroll',
+        height: '100vh',
+        position: 'fixed',
+        left: 0,
+        top: 0,
+        bottom: 0,
+      }}
+    >
+      {/* Logo */}
+      {!collapsed && (
+        <div style={{ 
+          padding: '16px', 
+          textAlign: 'center',
+          borderBottom: '1px solid #f0f0f0'
+        }}>
+          <img
+            src={ENCORE_LOGO} 
+            alt="Encore Logo"
+            style={{ height: 40, maxWidth: '100%' }}
+          />
         </div>
+      )}
 
-       
-        <Nav.Item>
-          <div
-            className="sidebar-link"
-            onClick={() => handleDropdownToggle("bookmarks")}
-          >
-            <i
-              className={`link-chevron bi bi-chevron-right ${openDropdown === "bookmarks" ? "open" : ""
-                }`}
-            ></i>
-            <i className="bi bi-bookmark"></i>
-            <span className="link-text">BOOKMARKS</span>
-            <i className="link-icon-right bi bi-pencil"></i>
-          </div>
+      {/* New Order Button */}
+      <div style={{ padding: '16px' }}>
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
+          size="large"
+          block
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: collapsed ? 'center' : 'flex-start',
+            gap: collapsed ? 0 : 8,
+          }}
+        >
+          {!collapsed && 'NEW ORDER'}
+        </Button>
+      </div>
 
-          {!isSidebarCollapsed && (
-            <ul
-              className={`dropdown-menu ${openDropdown === "bookmarks" ? "open" : ""
-                }`}
-            >
-              <li>
-                <Link to="/home" className="dropdown-item">
-                  Home 🏠
-                </Link>
-              </li>
-              {fakeDropdownContent.map((item) => (
-                <li key={item}>
-                  <Link to="#" className="dropdown-item">
-                    {item} 🔹
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          )}
-        </Nav.Item>
-
-        {/* --- Menu Dropdown --- */}
-        <Nav.Item>
-          <div
-            className="sidebar-link"
-            onClick={() => handleDropdownToggle("menu")}
-          >
-            <i
-              className={`link-chevron bi bi-chevron-right ${openDropdown === "menu" ? "open" : ""
-                }`}
-            ></i>
-            <i className="bi bi-house-door"></i>
-            <span className="link-text">MENU</span>
-            <i className="link-icon-right bi bi-pencil"></i>
-          </div>
-
-          {!isSidebarCollapsed && (
-            <ul
-              className={`dropdown-menu ${openDropdown === "menu" ? "open" : ""
-                }`}
-            >
-              {fakeDropdownContent.map((item) => (
-                <li key={item}>
-                  <Link to="#" className="dropdown-item">
-                    {item}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          )}
-        </Nav.Item>
-
-        {/* --- Flyout Items --- */}
-        <Nav.Item>
-          <Nav.Link as={Link} to="/appointment" className="sidebar-link">
-            <i className="bi bi-calendar-date"></i>
-            <span className="link-text">APPOINTMENT</span>
-            <i className="link-icon-right bi bi-chevron-right"></i>
-            {/* Flyout Menu */}
-            <ul className="flyout-menu">
-              {fakeDropdownContent.map(item => <li key={item}><Link to="#" className="flyout-item">{item}</Link></li>)}
-            </ul>
-          </Nav.Link>
-        </Nav.Item>
-
-        <Nav.Item>
-          <Nav.Link as={Link} to="/clinical-notes" className="sidebar-link">
-            <i className="bi bi-journal-text"></i>
-            <span className="link-text">CLINICAL NOTES</span>
-            <i className="link-icon-right bi bi-chevron-right"></i>
-            <ul className="flyout-menu">
-              {fakeDropdownContent.map(item => <li key={item}><Link to="#" className="flyout-item">{item}</Link></li>)}
-            </ul>
-          </Nav.Link>
-        </Nav.Item>
-
-        <Nav.Item>
-          <Nav.Link as={Link} to="/form-tools" className="sidebar-link">
-            <i className="bi bi-pencil-square"></i>
-            <span className="link-text">FORM TOOLS</span>
-            <i className="link-icon-right bi bi-chevron-right"></i>
-            <ul className="flyout-menu">
-              {fakeDropdownContent.map(item => <li key={item}><Link to="#" className="flyout-item">{item}</Link></li>)}
-            </ul>
-          </Nav.Link>
-        </Nav.Item>
-
-        <Nav.Item>
-          <Nav.Link as={Link} to="/residents" className="sidebar-link">
-            <i className="bi bi-people"></i>
-            <span className="link-text">RESIDENTS</span>
-          </Nav.Link>
-        </Nav.Item>
-
-        <Nav.Item>
-          <Nav.Link as={Link} to="/setup" className="sidebar-link">
-            <i className="bi bi-gear"></i>
-            <span className="link-text">SETUP</span>
-            <i className="link-icon-right bi bi-chevron-right"></i>
-            <ul className="flyout-menu">
-              {fakeDropdownContent.map(item => <li key={item}><Link to="#" className="flyout-item">{item}</Link></li>)}
-            </ul>
-          </Nav.Link>
-        </Nav.Item>
-
-        <Nav.Item>
-          <Nav.Link as={Link} to="/report" className="sidebar-link">
-            <i className="bi bi-file-earmark-bar-graph"></i>
-            <span className="link-text">REPORT</span>
-            <i className="link-icon-right bi bi-chevron-right"></i>
-            <ul className="flyout-menu">
-              {fakeDropdownContent.map(item => <li key={item}><Link to="#" className="flyout-item">{item}</Link></li>)}
-            </ul>
-          </Nav.Link>
-        </Nav.Item>
-      </Nav>
-    </div>
+      {/* Menu */}
+      <Menu
+        theme="dark"
+        mode="inline"
+        defaultSelectedKeys={['home']}
+        items={menuItems}
+        triggerSubMenuAction="hover"
+        style={{
+          borderRight: 0,
+        }}
+      />
+    </AntSider>
   );
 };
 
-export default Sidebar;
+export default Sider;
